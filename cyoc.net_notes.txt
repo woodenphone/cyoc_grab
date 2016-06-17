@@ -9,6 +9,90 @@ cyoc.net_notes.txt
 
 
 
+Image stories:
+    Page with listing of "Image Stories added in the last week" 
+    http://www.cyoc.net/modules.php?op=modload&name=Image_Stories&file=index
+
+    Picture URLs are like this:
+    http://www.cyoc.net/pics/3492.jpg
+
+
+    Image story URL format:
+    http://www.cyoc.net/modules.php?op=modload&name=Image_Stories&file=view_story&story_id=1408
+
+
+
+
+Basic stories:
+    Listing:
+        http://www.cyoc.net/modules.php?op=modload&name=Stories&file=index&type=Animal&id=2
+    View:
+        http://www.cyoc.net/modules.php?op=modload&name=Stories&file=article&sid=1969&mode=nested&order=0&thold=-1
+        http://www.cyoc.net/modules.php?op=modload&name=Stories&file=article&sid=1954&mode=nested&order=0&thold=-1
+        http://www.cyoc.net/modules.php?op=modload&name=Stories&file=article&sid=1849&mode=nested&order=0&thold=-1
+
+        It looks like we can just iterate over the "sid" value in the URL, maybe just generate a URL list and feed it into wget, wpull, or httrack?
+
+
+
+
+Choose your own adventure stories:
+    Latest updates page:
+        http://www.cyoc.net/updates.php
+    Story outline:
+        http://www.cyoc.net/interactives/story_50/outline.html
+        http://www.cyoc.net/interactives/story_26/outline.html
+    Chapter:
+        http://www.cyoc.net/interactives/chapter_105806.html
+        http://www.cyoc.net/interactives/chapter_105782.html
+
+
+
+
+Picture albums:
+    Directory listing can be reached at: http://www.cyoc.net/album/
+        "Proudly Served by LiteSpeed Web Server at www.cyoc.net Port 80"
+        We should be able to just use wget, wpull, or httrack for this
+
+    There are also web pages for viewing the galleries:
+        Not much point grabbing these pages, since we can get the images with less work using the directory listings.
+        http://www.cyoc.net/index.php?set_albumName=She-Hulk&id=she_hulk001&name=Gallery&include=view_photo.php
+        http://www.cyoc.net/index.php?set_albumName=Comics&id=black_canary_001&name=Gallery&include=view_photo.php
+        http://www.cyoc.net/index.php?set_albumName=She-Hulk&name=Gallery&include=view_album.php
+        http://www.cyoc.net/index.php?set_albumName=Comics&name=Gallery&include=view_album.php
+        http://www.cyoc.net/modules.php?op=modload&name=Gallery&file=index
+
+
+
+
+
+Users:
+    http://www.cyoc.net/interactives/user_10916.html
+    http://www.cyoc.net/user.php?op=userinfo&uname=grrside
+
+
+
+
+
+Pages to exclude:
+    Probably an underage user trap:
+        http://www.cyoc.net/user.php?op=underage&module=NewUser
+    Report item links:
+        http://www.cyoc.net/index.php?name=PNphpBB2&file=viewtopic&t=2530
+    Logout:
+        http://www.cyoc.net/user.php?module=User&op=logout
+        http://www.cyoc.net/user.php?module=NS-User&op=logout
+
+    http://www.cyoc.net/interactives/usercp.php?action=notifications
+    http://www.cyoc.net/interactives/search.php?favorites=11123
+    http://www.cyoc.net/index.php?module=Members_List&func=viewcurrentonline
+
+
+There is a warning page located on: http://www.cyoc.net/
+    enter leads to: http://www.cyoc.net/user.php?op=check_age&module=NS-NewUser
+    
+
+http://www.cyoc.net/index.php
 
 
 
@@ -22,18 +106,23 @@ cyoc.net_notes.txt
 
 
 
+How to log in:
 
+curl "http://www.cyoc.net/user.php" -H "Cookie: POSTNUKESID=5ea747a91813be09aa81deefff7046a7; __utmt=1; __utma=220880906.206959211.1465906405.1465906405.1466141531.2; __utmb=220880906.4.10.1466141531; __utmc=220880906; __utmz=220880906.1465906405.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)" -H "Origin: http://www.cyoc.net" -H "Accept-Encoding: gzip, deflate" -H "Accept-Language: en-US,en;q=0.8" -H "Upgrade-Insecure-Requests: 1" -H "User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36" -H "Content-Type: application/x-www-form-urlencoded" -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8" -H "Cache-Control: max-age=0" -H "Referer: http://www.cyoc.net/index.php" -H "Connection: keep-alive" --data "uname=aachange01&pass=kyvcNHmc&rememberme=1&module=User&op=login&url=http"%"3A"%"2F"%"2Fwww.cyoc.net"%"2Findex.php" --compressed
 
-
-
-
-
-
-
-
-
-
-
-
+curl "http://www.cyoc.net/user.php" 
+ -H "Cookie: POSTNUKESID=5ea747a91813be09aa81deefff7046a7; __utmt=1; __utma=220880906.206959211.1465906405.1465906405.1466141531.2; __utmb=220880906.4.10.1466141531; __utmc=220880906; __utmz=220880906.1465906405.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)" 
+ -H "Origin: http://www.cyoc.net" 
+ -H "Accept-Encoding: gzip, deflate" 
+ -H "Accept-Language: en-US,en;q=0.8" 
+ -H "Upgrade-Insecure-Requests: 1" 
+ -H "User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36" 
+ -H "Content-Type: application/x-www-form-urlencoded" 
+ -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8" 
+ -H "Cache-Control: max-age=0" 
+ -H "Referer: http://www.cyoc.net/index.php" 
+ -H "Connection: keep-alive"
+ --data "uname=aachange01&pass=kyvcNHmc&rememberme=1&module=User&op=login&url=http"%"3A"%"2F"%"2Fwww.cyoc.net"%"2Findex.php"
+ --compressed
 
 

@@ -1,5 +1,7 @@
 config.py
+accounts.py
 *.pyc
+cyoc_cookies.txt
 debug/
 tmp/
 download/
