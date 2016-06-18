@@ -3,12 +3,6 @@ cyoc.net_notes.txt
 
 
 
-
-
-
-
-
-
 Image stories:
     Page with listing of "Image Stories added in the last week" 
     http://www.cyoc.net/modules.php?op=modload&name=Image_Stories&file=index
@@ -19,6 +13,18 @@ Image stories:
 
     Image story URL format:
     http://www.cyoc.net/modules.php?op=modload&name=Image_Stories&file=view_story&story_id=1408
+
+    Range to do:
+        1 -> 1500
+        Exists
+            http://www.cyoc.net/modules.php?op=modload&name=Image_Stories&file=view_story&story_id=1
+            http://www.cyoc.net/modules.php?op=modload&name=Image_Stories&file=view_story&story_id=1341
+            http://www.cyoc.net/modules.php?op=modload&name=Image_Stories&file=view_story&story_id=1400
+
+        Does not exist:
+            http://www.cyoc.net/modules.php?op=modload&name=Image_Stories&file=view_story&story_id=1450 
+            http://www.cyoc.net/modules.php?op=modload&name=Image_Stories&file=view_story&story_id=1500
+            http://www.cyoc.net/modules.php?op=modload&name=Image_Stories&file=view_story&story_id=2000
 
 
 
@@ -33,6 +39,13 @@ Basic stories:
 
         It looks like we can just iterate over the "sid" value in the URL, maybe just generate a URL list and feed it into wget, wpull, or httrack?
 
+    Range to do:
+        1 -> ?
+        Exists:
+            http://www.cyoc.net/modules.php?op=modload&name=Stories&file=article&sid=1969&mode=nested&order=0&thold=-1
+
+        Does not exist:
+
 
 
 
@@ -45,6 +58,14 @@ Choose your own adventure stories:
     Chapter:
         http://www.cyoc.net/interactives/chapter_105806.html
         http://www.cyoc.net/interactives/chapter_105782.html
+
+    Range to do:
+        1 -> ?
+        Exists:
+            http://www.cyoc.net/interactives/chapter_105806.html
+
+
+        Does not exist:
 
 
 

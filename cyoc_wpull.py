@@ -58,7 +58,8 @@ def setup_logging(log_file_path,timestamp_filename=True,max_log_size=104857600):
         # '2015-06-30-13.44.15'
         timestamp_string = datetime.datetime.utcnow().strftime("%Y-%m-%d %H.%M.%S%Z")
         # Full log
-        log_file_path = add_timestamp_to_log_filename(log_file_path,timestamp_string)
+        base, ext = os.path.splitext(log_file_path)
+        log_file_path = base+"_"+timestamp_string+ext
 
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
@@ -87,12 +88,6 @@ def setup_logging(log_file_path,timestamp_filename=True,max_log_size=104857600):
 
     logging.info("Logging started.")
     return logger
-
-
-def add_timestamp_to_log_filename(log_file_path,timestamp_string):
-    """Insert a string before a file extention"""
-    base, ext = os.path.splitext(log_file_path)
-    return base+"_"+timestamp_string+ext
 
 
 def generate_job_name(job_type, low_id, high_id):
@@ -141,20 +136,17 @@ def run(job_name, url_list):
     """Invoke Wpull"""
     logging.info('begin run()')
     # Pre-generate filepaths and create directories
-    job_name = '%s.%s-%s.%s' % (PROJECT_NAME, low_id, high_id, time.strftime("%Y-%m-%d_%H.%M.%S"))
+    if os.path.isdir(job_name):
+            shutil.rmtree(job_name)
+    os.makedirs(job_name)
 
-    job_dir = job_name
-    if os.path.isdir(job_dir):
-            shutil.rmtree(job_dir)
-    os.makedirs(job_dir)
+    log_path = os.path.join(job_name, "wpull.log")
+    open(log_path, "w").close()# Create file
 
-    log_path = os.path.join(job_dir, "wpull.log")
-    open(log_path, "w").close()
+    warc_path = os.path.join(job_name, job_name)
 
-    warc_path = os.path.join(job_dir, job_name)
-
-    db_path = os.path.join(job_dir, 'wpull.db')
-    open(db_path, "w").close()
+    db_path = os.path.join(job_name, 'wpull.db')
+    open(db_path, "w").close()# Create file
 
     # Generate arguments to give to Wpull
     wpull_args = [
@@ -184,8 +176,6 @@ def run(job_name, url_list):
     ]
 
     # Append the URLs
-    nums = list(range(int(low_id), int(high_id)))
-    random.shuffle(nums)
     for url in url_list:
         wpull_args.append(url)
 
@@ -199,20 +189,24 @@ def run(job_name, url_list):
 
 def main():
     # TODO: argparse
-##    parser = argparse.ArgumentParser()
-##    parser.add_argument('start_num', help='low end of the range to work over (inclusive)',
-##                    type=int)
-##    parser.add_argument('end_num', help='high end of the range to work over (exclusive)',
-##                    type=int)
-##    args = parser.parse_args()
-    # Define what we're doing
-    low_id, high_id = 1000, 1010
-    job_type = 'img_story'
+    parser = argparse.ArgumentParser()
+    parser.add_argument('job_name', help='what job type to run (img_story, normal_story, cyoa_outline, or cyoa_chapter)',
+                    type=str)
+    parser.add_argument('low_id', help='low end of the range to work over (inclusive)',
+                    type=int)
+    parser.add_argument('high_id', help='high end of the range to work over (exclusive)',
+                    type=int)
+    args = parser.parse_args()
+    logging.debug('args: %r' % (args))
+
+    low_id = args.low_id
+    high_id = args.high_id
+    job_type = args.job_type
 
     # Name the job
     job_name = generate_job_name(job_type, low_id, high_id)
-
     logging.debug('job_name: %r' % (job_name))
+
     # Run the job
     if job_type == 'img_story':
         url_list = generate_img_story_url_list(low_id, high_id)
@@ -229,10 +223,6 @@ def main():
     elif job_type == 'cyoa_chapter':
         url_list = generate_cyoa_chapter_url_list(low_id, high_id)
         run(job_name, url_list)
-
-##    elif job_type == 'user':
-##        url_list = generate_user_url_list(low_id, high_id)
-##        run(job_name, url_list)
 
     else:
         raise Exception('Invalid job type')
