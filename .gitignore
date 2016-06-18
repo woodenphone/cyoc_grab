@@ -4,4 +4,5 @@ accounts.py
 cyoc_cookies.txt
 debug/
 tmp/
+temp/
 download/
