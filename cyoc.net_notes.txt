@@ -111,9 +111,7 @@ Pages to exclude:
 
 There is a warning page located on: http://www.cyoc.net/
     enter leads to: http://www.cyoc.net/user.php?op=check_age&module=NS-NewUser
-    
-
-http://www.cyoc.net/index.php
+    actual main page is at http://www.cyoc.net/index.php
 
 
 

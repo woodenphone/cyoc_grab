@@ -18,6 +18,7 @@ import hashlib
 import os
 import random
 import shutil
+import argparse
 # local
 #import config
 
@@ -26,17 +27,15 @@ import shutil
 USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36'
 WPULL_PATH = 'wpull'
 PROJECT_NAME = 'cyoc'
-JOB_TYPE = 'pic_story'
 VERSION = '2016-06-18.1'# YYYY-MM-DD.<version that day>
 
 
+def get_hash(filename):
+    with open(filename, 'rb') as in_file:
+        return hashlib.sha1(in_file.read()).hexdigest()
 
-##def get_hash(filename):
-##    with open(filename, 'rb') as in_file:
-##        return hashlib.sha1(in_file.read()).hexdigest()
-##
-##
-##RUNNER_SHA1 = get_hash(os.path.join(os.getcwd(), 'run_wpull_for_picture_story_url_list.py'))
+RUNNER_SHA1 = get_hash(os.path.join(os.getcwd(), 'cyoc_wpull.py'))
+
 
 def setup_logging(log_file_path,timestamp_filename=True,max_log_size=104857600):
     """Setup logging (Before running any other code)
@@ -156,7 +155,7 @@ def run(job_name, url_list):
     "--no-robots",
     "--no-check-certificate",
     "--load-cookies", os.path.join(os.getcwd(), 'cyoc_cookies.txt'),
-    "--delete-after",# We only need the WARC file
+    #"--delete-after",# We only need the WARC file
     "--no-parent",
     "--database", db_path,
 
@@ -172,10 +171,11 @@ def run(job_name, url_list):
     "--warc-file", warc_path,
     "--warc-header", "operator: Anonarchive",
     "--warc-header", "cyoc-dld-script-version: %s" % (VERSION),
+    "--warc-header", "cyoc-dld-script-sha1: %s" % (RUNNER_SHA1),# In case the version string is forgotten
     "--warc-header", "job_name: %s" % (job_name),
     ]
 
-    # Append the URLs
+    # Append the URLs to the command
     for url in url_list:
         wpull_args.append(url)
 
@@ -190,7 +190,7 @@ def run(job_name, url_list):
 def main():
     # TODO: argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('job_name', help='what job type to run (img_story, normal_story, cyoa_outline, or cyoa_chapter)',
+    parser.add_argument('job_type', help='what job type to run (img_story, normal_story, cyoa_outline, or cyoa_chapter)',
                     type=str)
     parser.add_argument('low_id', help='low end of the range to work over (inclusive)',
                     type=int)
