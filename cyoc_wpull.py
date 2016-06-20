@@ -140,8 +140,8 @@ def run(job_name, url_list):
             shutil.rmtree(job_name)
     os.makedirs(job_name)
 
-    log_path = os.path.join(job_name, "wpull.log")
-    open(log_path, "w").close()# Create file
+    wpull_log_path = os.path.join(job_name, "wpull.log")
+    open(wpull_log_path, "w").close()# Create file
 
     warc_path = os.path.join(job_name, job_name)
 
@@ -152,7 +152,7 @@ def run(job_name, url_list):
     wpull_args = [
     WPULL_PATH,
     "--user-agent", USER_AGENT,
-    "--output-file", log_path,
+    "--output-file", wpull_log_path,
     "--no-robots",
     "--no-check-certificate",
     "--load-cookies", os.path.join(os.getcwd(), 'cyoc_cookies.txt'),
