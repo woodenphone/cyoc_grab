@@ -28,13 +28,14 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, lik
 WPULL_PATH = 'wpull'
 PROJECT_NAME = 'cyoc'
 VERSION = '2016-06-18.1'# YYYY-MM-DD.<version that day>
-
+WPULL_HOOKS_SCRIPT = os.path.join(os.getcwd(), 'cyoc_wpull_hooks.py')
 
 def get_hash(filename):
     with open(filename, 'rb') as in_file:
         return hashlib.sha1(in_file.read()).hexdigest()
 
 RUNNER_SHA1 = get_hash(os.path.join(os.getcwd(), 'cyoc_wpull.py'))
+WPULL_HOOKS_SHA1 = get_hash(WPULL_HOOKS_SCRIPT)
 
 
 def setup_logging(log_file_path,timestamp_filename=True,max_log_size=104857600):
@@ -159,6 +160,8 @@ def run(job_name, url_list):
     "--no-parent",
     "--database", db_path,
 
+    "--plugin-script", WPULL_HOOKS_SCRIPT,
+
     "--timeout", "60",
     "--tries", "inf",
 
@@ -172,6 +175,7 @@ def run(job_name, url_list):
     "--warc-header", "operator: Anonarchive",
     "--warc-header", "cyoc-dld-script-version: %s" % (VERSION),
     "--warc-header", "cyoc-dld-script-sha1: %s" % (RUNNER_SHA1),# In case the version string is forgotten
+    "--warc-header", "cyoc-dld-hooks-sha1: %s" % (WPULL_HOOKS_SHA1),
     "--warc-header", "job_name: %s" % (job_name),
     ]
 
