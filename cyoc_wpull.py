@@ -196,7 +196,7 @@ def run(job_name, url_list):
     "--warc-header", "cyoc-dld-hooks-sha1: %s" % (WPULL_HOOKS_SHA1),
     "--warc-header", "job_name: %s" % (job_name),
 
-    '-i', url_list_path
+    '--input-file', url_list_path
     ]
 
     # Run the command
