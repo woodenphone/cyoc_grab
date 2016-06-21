@@ -46,7 +46,7 @@ class CYOCPlugin(WpullPlugin):
             for exclude_string in exclude_strings:
                 lc_exclude_string = exclude_string.lower()# Lowercase for easier comparisons
                 if (lc_exclude_string in lc_page_data):
-                    print('cyoc_wpull_hooks.py exclude_string matched: {0}'.format(repr(exclude_string)))
+                    print('cyoc_wpull_hooks.py lc_exclude_string matched: {0}'.format(repr(lc_exclude_string)))
                     return(Actions.STOP)
 
         return Actions.NORMAL# If we don't have any input to make

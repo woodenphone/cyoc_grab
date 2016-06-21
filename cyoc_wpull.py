@@ -152,12 +152,12 @@ def run(job_name, url_list):
             shutil.rmtree(job_name)
     os.makedirs(job_name)
 
-    wpull_log_path = os.path.join(job_name, "wpull.log")
+    wpull_log_path = os.path.join(job_name, "{0}.log".format(job_name))
     open(wpull_log_path, "w").close()# Create file
 
     warc_path = os.path.join(os.getcwd(), job_name, job_name)
 
-    db_path = os.path.join(os.getcwd(), job_name, 'wpull.db')
+    db_path = os.path.join(os.getcwd(), job_name, '{0}.db'.format(job_name))
     open(db_path, "w").close()# Create file
 
     # Generate arguments to give to Wpull
