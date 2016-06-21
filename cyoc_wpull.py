@@ -103,7 +103,7 @@ def generate_img_story_url_list(low_id, high_id):
     #random.shuffle(nums)
     for num in nums:
         url_list.append(
-        'http://www.cyoc.net/modules.php?op=modload&name=Image_Stories&file=view_story&story_id={0}'.format(num)
+        'http://www.cyoc.net/modules.php?op=modload&name=Image_Stories&file=view_story&story_id={0}\n'.format(num)
         )
     return url_list
 
@@ -115,7 +115,7 @@ def generate_normal_story_url_list(low_id, high_id):
     #random.shuffle(nums)
     for num in nums:
         url_list.append(
-        'http://www.cyoc.net/modules.php?op=modload&name=Stories&file=article&sid={0}&mode=nested&order=0&thold=-1'.format(num)
+        'http://www.cyoc.net/modules.php?op=modload&name=Stories&file=article&sid={0}&mode=nested&order=0&thold=-1\n'.format(num)
         )
     return url_list
 
@@ -127,7 +127,7 @@ def generate_cyoa_outline_url_list(low_id, high_id):
     #random.shuffle(nums)
     for num in nums:
         url_list.append(
-        ' http://www.cyoc.net/interactives/story_{0}/outline.html'.format(num)
+        ' http://www.cyoc.net/interactives/story_{0}/outline.html\n'.format(num)
         )
     return url_list
 
@@ -139,7 +139,7 @@ def generate_cyoa_chapter_url_list(low_id, high_id):
     #random.shuffle(nums)
     for num in nums:
         url_list.append(
-        ' http://www.cyoc.net/interactives/chapter_{0}.html'.format(num)
+        ' http://www.cyoc.net/interactives/chapter_{0}.html\n'.format(num)
         )
     return url_list
 
@@ -159,6 +159,12 @@ def run(job_name, url_list):
 
     db_path = os.path.join(os.getcwd(), job_name, '{0}.db'.format(job_name))
     open(db_path, "w").close()# Create file
+
+    # Write url list to file
+    url_list_path = os.path.join(os.getcwd(), job_name, '{0}.url_list.txt'.format(job_name))
+    with open(url_list_path, "w") as lf:
+        lf.writelines(url_list)
+
 
     # Generate arguments to give to Wpull
     wpull_args = [
@@ -189,11 +195,9 @@ def run(job_name, url_list):
     "--warc-header", "cyoc-dld-script-sha1: %s" % (RUNNER_SHA1),# In case the version string is forgotten
     "--warc-header", "cyoc-dld-hooks-sha1: %s" % (WPULL_HOOKS_SHA1),
     "--warc-header", "job_name: %s" % (job_name),
-    ]
 
-    # Append the URLs to the command
-    for url in url_list:
-        wpull_args.append(url)
+    '-i', url_list_path
+    ]
 
     # Run the command
     logging.debug('wpull_args%r' % (wpull_args))
