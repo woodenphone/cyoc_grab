@@ -30,10 +30,10 @@ class CYOCPlugin(WpullPlugin):
 
         # Only check logged in status of target pages, not images, CSS, JS, etc
         if (
-            ('cyoc.net/modules.php?op=modload&name=Stories&file=article&sid=' in url) or# Basic stories
-            ('cyoc.net/modules.php?op=modload&name=Image_Stories&file=view_story&story_id' in url) or# Image stories
-            ('outline.html' in url) or# CYOA Outlines
-            ('cyoc.net/interactives/chapter_' in url)# CYOA Chapters
+            ('cyoc.net/modules.php?op=modload&name=Stories&file=article&sid='.lower() in url.lower()) or# Basic stories
+            ('cyoc.net/modules.php?op=modload&name=Image_Stories&file=view_story&story_id'.lower() in url.lower()) or# Image stories
+            ('outline.html'.lower() in url.lower()) or# CYOA Outlines
+            ('cyoc.net/interactives/chapter_'.lower() in url.lower())# CYOA Chapters
             ):
             # Kill run if not logged in
             lc_page_data = page_data.lower()# Lowercase for easier comparisons
