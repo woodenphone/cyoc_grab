@@ -100,7 +100,7 @@ def generate_img_story_url_list(low_id, high_id):
     """Make a list of URLs for CYOC image story pages for the given range (Low inclusive, high exclusive)"""
     url_list = []
     nums = list(range(int(low_id), int(high_id)))
-    random.shuffle(nums)
+    #random.shuffle(nums)
     for num in nums:
         url_list.append(
         'http://www.cyoc.net/modules.php?op=modload&name=Image_Stories&file=view_story&story_id={0}'.format(num)
@@ -112,7 +112,7 @@ def generate_normal_story_url_list(low_id, high_id):
     """Make a list of URLs for CYOC regular story pages for the given range (Low inclusive, high exclusive)"""
     url_list = []
     nums = list(range(int(low_id), int(high_id)))
-    random.shuffle(nums)
+    #random.shuffle(nums)
     for num in nums:
         url_list.append(
         'http://www.cyoc.net/modules.php?op=modload&name=Stories&file=article&sid={0}&mode=nested&order=0&thold=-1'.format(num)
@@ -124,10 +124,22 @@ def generate_cyoa_outline_url_list(low_id, high_id):
     """Make a list of URLs for CYOC CYOA outline pages for the given range (Low inclusive, high exclusive)"""
     url_list = []
     nums = list(range(int(low_id), int(high_id)))
-    random.shuffle(nums)
+    #random.shuffle(nums)
     for num in nums:
         url_list.append(
         ' http://www.cyoc.net/interactives/story_{0}/outline.html'.format(num)
+        )
+    return url_list
+
+
+def generate_cyoa_chapter_url_list(low_id, high_id):
+    """Make a list of URLs for CYOC CYOA chapter pages for the given range (Low inclusive, high exclusive)"""
+    url_list = []
+    nums = list(range(int(low_id), int(high_id)))
+    #random.shuffle(nums)
+    for num in nums:
+        url_list.append(
+        ' http://www.cyoc.net/interactives/chapter_{0}.html'.format(num)
         )
     return url_list
 
@@ -143,9 +155,9 @@ def run(job_name, url_list):
     wpull_log_path = os.path.join(job_name, "wpull.log")
     open(wpull_log_path, "w").close()# Create file
 
-    warc_path = os.path.join(job_name, job_name)
+    warc_path = os.path.join(os.getcwd(), job_name, job_name)
 
-    db_path = os.path.join(job_name, 'wpull.db')
+    db_path = os.path.join(os.getcwd(), job_name, 'wpull.db')
     open(db_path, "w").close()# Create file
 
     # Generate arguments to give to Wpull
@@ -156,7 +168,7 @@ def run(job_name, url_list):
     "--no-robots",
     "--no-check-certificate",
     "--load-cookies", os.path.join(os.getcwd(), 'cyoc_cookies.txt'),
-    #"--delete-after",# We only need the WARC file
+    "--delete-after",# We only need the WARC file
     "--no-parent",
     "--database", db_path,
 
@@ -165,11 +177,11 @@ def run(job_name, url_list):
     "--timeout", "60",
     "--tries", "inf",
 
-    "--wait=2",
+    "--wait=2",# 2 seconds between requests seems slow enough to avoid problems
     "--random-wait",
     "--waitretry", "30",
 
-    "--page-requisites",# This should grab the embeds
+    "--page-requisites",# This should grab the image embeds
 
     "--warc-file", warc_path,
     "--warc-header", "operator: Anonarchive",
