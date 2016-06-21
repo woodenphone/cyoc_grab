@@ -41,6 +41,7 @@ class CYOCPlugin(WpullPlugin):
                 'You must be logged in to view this site',
                 'Please login or Register Via the login box on the lef',
                 'You are not logged in. Log in',
+                'You are not logged in.',
             ]
             for exclude_string in exclude_strings:
                 lc_exclude_string = exclude_string.lower()# Lowercase for easier comparisons
